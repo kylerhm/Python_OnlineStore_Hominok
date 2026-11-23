@@ -1,9 +1,10 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
-from django.contrib import messages
-from store.models import Product, Category, Cart, CartItem, Order, OrderItem
+from django.shortcuts import get_object_or_404, redirect, render
+
 from store.forms import CartForm, OrderForm
+from store.models import Cart, CartItem, Category, Order, OrderItem, Product
 
 
 def product_list(request):
@@ -47,10 +48,9 @@ def add_to_cart(request):
             # Проверяем наличие на складе
             if product.stock_quantity < quantity:
                 messages.error(
-                    request,
-                    f"На складе доступно только {product.stock_quantity} шт."
+                    request, f"На складе доступно только {product.stock_quantity} шт."
                 )
-                return redirect("product_detail", pk=product.pk)
+                return redirect("store:product_detail", pk=product.pk)
 
             # Получаем или создаём корзину пользователя
             cart, created = Cart.objects.get_or_create(user=request.user)
@@ -66,7 +66,7 @@ def add_to_cart(request):
             cart_item.save()
 
             messages.success(request, f"{product.name} добавлен в корзину")
-            return redirect("cart")
+            return redirect("store:cart")
     else:
         form = CartForm()
 
@@ -105,7 +105,7 @@ def update_cart_item(request, item_id):
                 if item.product.stock_quantity < quantity:
                     messages.error(
                         request,
-                        f"На складе доступно только {item.product.stock_quantity} шт."
+                        f"На складе доступно только {item.product.stock_quantity} шт.",
                     )
                     return redirect("cart")
                 item.quantity = quantity
@@ -138,7 +138,7 @@ def checkout(request):
                 if item.product.stock_quantity < item.quantity:
                     messages.error(
                         request,
-                        f"На складе недостаточно {item.product.name} (доступно: {item.product.stock_quantity})"
+                        f"На складе недостаточно {item.product.name} (доступно: {item.product.stock_quantity})",
                     )
                     return redirect("cart")
 

@@ -1,5 +1,6 @@
 from django import forms
-from store.models import Product, Cart
+
+from store.models import Cart, Product
 
 
 class CartForm(forms.Form):
@@ -7,11 +8,10 @@ class CartForm(forms.Form):
 
     product = forms.ModelChoiceField(
         queryset=Product.objects.all(),
-        widget=forms.Select(attrs={"class": "form-control"})
+        widget=forms.Select(attrs={"class": "form-control"}),
     )
     quantity = forms.IntegerField(
-        min_value=1,
-        widget=forms.NumberInput(attrs={"class": "form-control"})
+        min_value=1, widget=forms.NumberInput(attrs={"class": "form-control"})
     )
 
 
@@ -20,10 +20,12 @@ class OrderForm(forms.Form):
 
     full_name = forms.CharField(
         max_length=255,
-        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "ФИО"})
+        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "ФИО"}),
     )
     address = forms.CharField(
-        widget=forms.Textarea(attrs={"class": "form-control", "rows": 3, "placeholder": "Адрес доставки"})
+        widget=forms.Textarea(
+            attrs={"class": "form-control", "rows": 3, "placeholder": "Адрес доставки"}
+        )
     )
     email = forms.EmailField(
         widget=forms.EmailInput(attrs={"class": "form-control", "placeholder": "Email"})
@@ -31,5 +33,7 @@ class OrderForm(forms.Form):
     phone = forms.CharField(
         max_length=20,
         required=False,
-        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Телефон"})
+        widget=forms.TextInput(
+            attrs={"class": "form-control", "placeholder": "Телефон"}
+        ),
     )

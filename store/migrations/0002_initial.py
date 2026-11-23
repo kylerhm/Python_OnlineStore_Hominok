@@ -10,48 +10,83 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('store', '0001_initial'),
+        ("store", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='cart',
-            name='user',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='cart', to=settings.AUTH_USER_MODEL, verbose_name='Пользователь'),
+            model_name="cart",
+            name="user",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="cart",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Пользователь",
+            ),
         ),
         migrations.AddField(
-            model_name='cartitem',
-            name='cart',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='store.cart', verbose_name='Корзина'),
+            model_name="cartitem",
+            name="cart",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="items",
+                to="store.cart",
+                verbose_name="Корзина",
+            ),
         ),
         migrations.AddField(
-            model_name='order',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='orders', to=settings.AUTH_USER_MODEL, verbose_name='Пользователь'),
+            model_name="order",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="orders",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Пользователь",
+            ),
         ),
         migrations.AddField(
-            model_name='orderitem',
-            name='order',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='store.order', verbose_name='Заказ'),
+            model_name="orderitem",
+            name="order",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="items",
+                to="store.order",
+                verbose_name="Заказ",
+            ),
         ),
         migrations.AddField(
-            model_name='product',
-            name='category',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='products', to='store.category', verbose_name='Категория'),
+            model_name="product",
+            name="category",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="products",
+                to="store.category",
+                verbose_name="Категория",
+            ),
         ),
         migrations.AddField(
-            model_name='orderitem',
-            name='product',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='order_items', to='store.product', verbose_name='Товар'),
+            model_name="orderitem",
+            name="product",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="order_items",
+                to="store.product",
+                verbose_name="Товар",
+            ),
         ),
         migrations.AddField(
-            model_name='cartitem',
-            name='product',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='cart_items', to='store.product', verbose_name='Товар'),
+            model_name="cartitem",
+            name="product",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="cart_items",
+                to="store.product",
+                verbose_name="Товар",
+            ),
         ),
         migrations.AlterUniqueTogether(
-            name='cartitem',
-            unique_together={('cart', 'product')},
+            name="cartitem",
+            unique_together={("cart", "product")},
         ),
     ]

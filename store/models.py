@@ -1,6 +1,6 @@
-from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator
+from django.db import models
 
 
 class Category(models.Model):
@@ -24,25 +24,18 @@ class Product(models.Model):
 
     name = models.CharField(max_length=255, verbose_name="Название")
     description = models.TextField(blank=True, verbose_name="Описание")
-    price = models.DecimalField(
-        max_digits=7,
-        decimal_places=2,
-        verbose_name="Цена"
-    )
+    price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name="Цена")
     image = models.ImageField(
-        upload_to="products/",
-        blank=True,
-        verbose_name="Изображение"
+        upload_to="products/", blank=True, verbose_name="Изображение"
     )
     category = models.ForeignKey(
         Category,
         on_delete=models.PROTECT,
         related_name="products",
-        verbose_name="Категория"
+        verbose_name="Категория",
     )
     stock_quantity = models.PositiveIntegerField(
-        default=0,
-        verbose_name="Остаток на складе"
+        default=0, verbose_name="Остаток на складе"
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
@@ -64,7 +57,7 @@ class Cart(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="cart",
-        verbose_name="Пользователь"
+        verbose_name="Пользователь",
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
@@ -86,21 +79,16 @@ class CartItem(models.Model):
     """Позиция корзины."""
 
     cart = models.ForeignKey(
-        Cart,
-        on_delete=models.CASCADE,
-        related_name="items",
-        verbose_name="Корзина"
+        Cart, on_delete=models.CASCADE, related_name="items", verbose_name="Корзина"
     )
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
         related_name="cart_items",
-        verbose_name="Товар"
+        verbose_name="Товар",
     )
     quantity = models.PositiveIntegerField(
-        default=1,
-        verbose_name="Количество",
-        validators=[MinValueValidator(1)]
+        default=1, verbose_name="Количество", validators=[MinValueValidator(1)]
     )
 
     class Meta:
@@ -132,27 +120,17 @@ class Order(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="orders",
-        verbose_name="Пользователь"
+        verbose_name="Пользователь",
     )
     full_name = models.CharField(max_length=255, verbose_name="ФИО")
     address = models.TextField(verbose_name="Адрес доставки")
     email = models.EmailField(verbose_name="Email")
-    phone = models.CharField(
-        max_length=20,
-        blank=True,
-        verbose_name="Телефон"
-    )
+    phone = models.CharField(max_length=20, blank=True, verbose_name="Телефон")
     status = models.CharField(
-        max_length=20,
-        choices=STATUS_CHOICES,
-        default="new",
-        verbose_name="Статус"
+        max_length=20, choices=STATUS_CHOICES, default="new", verbose_name="Статус"
     )
     total_amount = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        default=0,
-        verbose_name="Итого"
+        max_digits=10, decimal_places=2, default=0, verbose_name="Итого"
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
@@ -171,24 +149,17 @@ class OrderItem(models.Model):
     """Позиция заказа."""
 
     order = models.ForeignKey(
-        Order,
-        on_delete=models.CASCADE,
-        related_name="items",
-        verbose_name="Заказ"
+        Order, on_delete=models.CASCADE, related_name="items", verbose_name="Заказ"
     )
     product = models.ForeignKey(
         Product,
         on_delete=models.PROTECT,
         related_name="order_items",
-        verbose_name="Товар"
+        verbose_name="Товар",
     )
-    quantity = models.PositiveIntegerField(
-        verbose_name="Количество"
-    )
+    quantity = models.PositiveIntegerField(verbose_name="Количество")
     price = models.DecimalField(
-        max_digits=7,
-        decimal_places=2,
-        verbose_name="Цена за единицу"
+        max_digits=7, decimal_places=2, verbose_name="Цена за единицу"
     )
 
     class Meta:

@@ -1,6 +1,8 @@
 import json
-from django.core.management.base import BaseCommand
+
 from django.core.management import call_command
+from django.core.management.base import BaseCommand
+
 from store.models import Product
 
 
@@ -41,5 +43,7 @@ class Command(BaseCommand):
             created_count += 1
 
         self.stdout.write(
-            self.style.SUCCESS(f"Успешно импортировано {created_count} товаров из {filename}")
+            self.style.SUCCESS(
+                f"Успешно импортировано {created_count} товаров из {filename}"
+            )
         )

@@ -1,5 +1,6 @@
 from django.contrib import admin
-from store.models import Category, Product, Cart, CartItem, Order, OrderItem
+
+from store.models import Cart, CartItem, Category, Order, OrderItem, Product
 
 
 @admin.register(Category)
