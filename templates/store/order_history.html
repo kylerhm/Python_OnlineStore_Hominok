@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Мои заказы{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Мои заказы</h1>
+
+{% if orders %}
+<div class="list-group">
+    {% for order in orders %}
+    <a href="{% url 'store:order_detail' pk=order.pk %}" class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Заказ #{{ order.id }}</h5>
+            <small>{{ order.created_at|date:"d.m.Y H:i" }}</small>
+        </div>
+        <p class="mb-1">{{ order.full_name }} | {{ order.total_amount }} ₽</p>
+        <small>
+            <span class="badge bg-{% if order.status == 'delivered' %}success{% elif order.status == 'cancelled' %}danger{% else %}primary{% endif %}">
+                {{ order.get_status_display }}
+            </span>
+        </small>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    У вас пока нет заказов. <a href="{% url 'store:product_list' %}">Перейти в каталог</a>
+</div>
+{% endif %}
+{% endblock %}

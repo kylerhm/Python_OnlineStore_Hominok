@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Корзина</h1>
+
+{% if items %}
+<div class="row">
+    <div class="col-md-8">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Товар</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Итого</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>
+                        <a href="{% url 'store:product_detail' pk=item.product.pk %}">
+                            {{ item.product.name }}
+                        </a>
+                    </td>
+                    <td>{{ item.product.price }} ₽</td>
+                    <td>
+                        <form method="post" action="{% url 'store:update_cart_item' item.pk %}" class="d-inline">
+                            {% csrf_token %}
+                            <div class="input-group" style="width: 100px;">
+                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control form-control-sm">
+                                <button type="submit" class="btn btn-sm btn-outline-primary">OK</button>
+                            </div>
+                        </form>
+                    </td>
+                    <td><strong>{{ item.get_total }} ₽</strong></td>
+                    <td>
+                        <form method="post" action="{% url 'store:remove_from_cart' item.pk %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Итого</h5>
+                <h4 class="text-success">{{ total }} ₽</h4>
+                <hr>
+                <a href="{% url 'store:checkout' %}" class="btn btn-success w-100">Оформить заказ</a>
+                <a href="{% url 'store:product_list' %}" class="btn btn-outline-secondary w-100 mt-2">Продолжить покупки</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info">
+    Ваша корзина пуста. <a href="{% url 'store:product_list' %}">Перейти в каталог</a>
+</div>
+{% endif %}
+{% endblock %}

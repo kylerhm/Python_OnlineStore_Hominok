@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Выход{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">Выход</h4>
+            </div>
+            <div class="card-body text-center">
+                <p>Вы вышли из системы.</p>
+                <a href="{% url 'store:product_list' %}" class="btn btn-primary">В каталог</a>
+                <a href="{% url 'users:login' %}" class="btn btn-outline-secondary">Войти снова</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
