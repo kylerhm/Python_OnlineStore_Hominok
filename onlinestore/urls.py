@@ -1,16 +1,18 @@
 """
 URL configuration for onlinestore project.
 """
-from django.contrib import admin
-from django.urls import path, include
+
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
 from django.shortcuts import render
+from django.urls import include, path
 
 
 def home(request):
     """Главная страница - перенаправление на каталог."""
     from django.shortcuts import redirect
+
     return redirect("store:product_list")
 
 
